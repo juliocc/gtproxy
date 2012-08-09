@@ -8,6 +8,29 @@ import urllib2
 import json
 import urllib
 
+from sqlalchemy import create_engine, ForeignKey
+from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, backref
+
+engine = create_engine('sqlite:///:memory:', echo=True)
+Base = declarative_base()
+Session = sessionmaker(bind=engine)
+
+class Cache(Base):
+    __tablename__ = "cache"
+    
+    id = Column(Integer, primary_key=True)
+    source = Column(String(2))  
+    target = Column(String(2))
+    question = Column(String)
+    result = Column(String)
+
+
+def create_tables():
+    Base.metadata.create_all(engine)
+
+
 def translate(q,source,target):
     key = 'AIzaSyCgl2cikF18bXZO5MmzQdGq1z5EZjNZ6M8'
     url = 'https://www.googleapis.com/language/translate/v2?key=%s&q=%s&source=%s&target=%s'%(key,urllib.quote(q),source,target)
@@ -81,6 +104,8 @@ def create_app():
     return app
 
 if __name__ == '__main__':
+    # create_tables()
+
     global words;
     try:
         with open('words.pickle') as f:
