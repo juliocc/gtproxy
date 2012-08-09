@@ -1,20 +1,20 @@
 from mongokit import Document
 
-class Translation(Document):
-    def length_exact(length):
-        def validate(value):
-            if len(value) == length:
-                return True
-            raise Exception('%s must be exactly %s characters long' % length)
-        return validate
+def length_exact(length):
+    def validate(value):
+        if len(value) == length:
+            return True
+        raise Exception('%s must be exactly %s characters long' % (value, length))
+    return validate
 
-    def min_length(length):
-        def validate(value):
-            if len(value) >= length:
-                return True
-            raise Exception('%s must be more than %s characters long' % length)
-        return validate
-    
+def min_length(length):
+    def validate(value):
+        if len(value) >= length:
+            return True
+        raise Exception('%s must be more than %s characters long' % (value, length))
+    return validate
+
+class Translation(Document):
     structure = {
         'source'   : unicode,
         'target'   : unicode,
