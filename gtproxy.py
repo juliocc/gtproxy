@@ -26,7 +26,9 @@ def translate(source, target):
     }
     result = collection.Translation.find_one(search_dict)
     if result is None:
-        result = google_translate(source, target, query)
+        result = google_translate(query, source, target)
+        if result is None:
+            return 'Invalid query', 200
         result = collection.Translation(dict(search_dict, response=result))
         result.save()
     return result['response'], 200
