@@ -5,7 +5,6 @@ from mongokit import Connection
 
 from models import Translation, User
 from translate import google_translate
-from database import get_connection
 
 # configuration
 MONGODB_HOST = 'localhost'
