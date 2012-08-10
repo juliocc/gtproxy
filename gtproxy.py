@@ -1,16 +1,15 @@
 from datetime import datetime
+
 from flask import Flask, request
 from mongokit import Connection
 
 from models import Translation, User
 from translate import google_translate
-
-import uuid
+from database import get_connection
 
 # configuration
 MONGODB_HOST = 'localhost'
 MONGODB_PORT = 27017
-
 app = Flask(__name__)
 app.config.from_object(__name__)
 
@@ -26,8 +25,6 @@ def translate(source, target, key):
     user = users.User.find_one({'key': key})
     if user is None:
         return "Forbidden", 503
-
-    print user
 
     translations  = connection.gtproxy.translations
     search_dict = {
@@ -55,16 +52,6 @@ def translate(source, target, key):
     user.save()
 
     return result['response'], 200
-
-def create_user(username):
-    users = connection.gtproxy.users
-    key = unicode(uuid.uuid4().hex)
-    user = users.User({'username': unicode(username), 
-                       'key': key,
-                       'created': datetime.now(),
-                       'query_count': 0})
-    user.save()
-    return key
     
 if __name__ == '__main__':
     app.debug = True
