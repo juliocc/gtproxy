@@ -1,3 +1,9 @@
+# Application
 Flask==0.9
 mongokit==2.2.1
 requests==0.13.6
+
+# Deploying
+Fabric=1.4.2
+gunicorn==0.14.6
+supervisor==3.0a12
