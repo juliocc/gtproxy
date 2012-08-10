@@ -1,3 +1,4 @@
+import datetime
 from mongokit import Document
 
 def length_exact(length):
@@ -14,12 +15,45 @@ def min_length(length):
         raise Exception('%s must be more than %s characters long' % (value, length))
     return validate
 
+class User(Document):
+    structure = {
+        'username'    : unicode,
+        'key'         : unicode,
+        'query_count' : int,
+        'created'     : datetime.datetime
+    }
+
+    indexes = [
+        {
+            'fields': 'username',
+            'unique': True
+        },
+        {
+            'fields': 'key',
+            'unique': True
+        },
+    ]
+
+    validators = {
+        'key': length_exact(32), # uuid4.hex len
+    }
+
+    use_dot_notation = True
+
+    def __repr__(self):
+        return '<User %s>' % (self.username)
+    
+
 class Translation(Document):
     structure = {
-        'source'   : unicode,
-        'target'   : unicode,
-        'query'    : unicode,
-        'response' : unicode,
+        'source'      : unicode,
+        'target'      : unicode,
+        'query'       : unicode,
+        'response'    : unicode,
+        'author'      : unicode,
+        'created'     : datetime.datetime,
+        'last_used'   : datetime.datetime,
+        'query_count' : int
     }
     indexes = [
         {
