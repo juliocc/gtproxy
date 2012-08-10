@@ -4,6 +4,6 @@ mongokit==0.8
 requests==0.13.6
 
 # Deploying
-Fabric=1.4.2
+Fabric==1.4.2
 gunicorn==0.14.6
 supervisor==3.0a12
