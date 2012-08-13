@@ -30,7 +30,6 @@ def translate(source, target, key):
         'source': source,
         'target': target,
         'query':  query,
-        'author': user.username
     }
     now = datetime.now()
     result = translations.Translation.find_one(search_dict)
@@ -41,6 +40,7 @@ def translate(source, target, key):
         result = translations.Translation(dict(search_dict, 
                                                response=result,
                                                created=now,
+                                               author=user.username,
                                                last_used=now,
                                                query_count=0))
     result.last_used = now
